@@ -112,6 +112,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.Holder> {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.delete_item:
+
                                     cursor.moveToPosition(getAdapterPosition());
                                     onSellClickedListener
                                             .onLongClickedListener(cursor.getString(cursor.getColumnIndex(ProductContract.Product.COLUMN_ID)));

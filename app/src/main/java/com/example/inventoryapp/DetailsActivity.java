@@ -2,6 +2,7 @@ package com.example.inventoryapp;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -72,7 +73,6 @@ public class DetailsActivity extends AppCompatActivity {
             --prodQuantity;
             quantity.setText(getString(R.string.quantity_details, prodQuantity));
             updateQuantity();
-
         }
     }
 
@@ -208,13 +208,28 @@ public class DetailsActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.delete_item:
-                int row = getContentResolver().delete(productUri, null, null);
-                if (row > 0) {
-                    Toast.makeText(this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, R.string.failed_delete_product, Toast.LENGTH_SHORT).show();
-                }
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                dialogBuilder.setTitle(getString(R.string.delete_product));
+                dialogBuilder.setMessage(getString(R.string.are_u_sure_u_want_delete));
+                dialogBuilder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int row = getContentResolver().delete(productUri, null, null);
+                        if (row > 0) {
+                            Toast.makeText(DetailsActivity.this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(DetailsActivity.this, R.string.failed_delete_product, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                dialogBuilder.create().show();
                 return true;
             default:
                 return false;

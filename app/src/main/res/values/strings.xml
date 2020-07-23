@@ -52,4 +52,6 @@
     <string name="order_from">Order From : %1$s</string>
     <string name="product_title">product name : %1$s</string>
     <string name="prod_id">"Product Id : %1$s"</string>
+    <string name="delete_product">Delete Product</string>
+    <string name="are_u_sure_u_want_delete">Are you sure you want to delete the product ?</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.inventoryapp;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -39,13 +41,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLongClickedListener(String id) {
-        int row = getContentResolver()
-                .delete(ContentUris.withAppendedId(ProductContract.Product.CONTENT_URI, Long.parseLong(id)), null, null);
-        if (row > 0) {
-            Toast.makeText(this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, R.string.failed_delete_product, Toast.LENGTH_SHORT).show();
-        }
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(getString(R.string.delete_product));
+        dialogBuilder.setMessage(getString(R.string.are_u_sure_u_want_delete));
+        dialogBuilder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int row = getContentResolver()
+                        .delete(ContentUris.withAppendedId(ProductContract.Product.CONTENT_URI, Long.parseLong(id)), null, null);
+                if (row > 0) {
+                    Toast.makeText(MainActivity.this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.failed_delete_product, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialogBuilder.create().show();
+
     }
 
     @Override
@@ -69,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void addToSales(String id, double price) {
-        Uri productUri = ContentUris.withAppendedId(ProductContract.Sales.CONTENT_URI,Long.parseLong(id));
+        Uri productUri = ContentUris.withAppendedId(ProductContract.Sales.CONTENT_URI, Long.parseLong(id));
         Cursor product = checkProductInSales(id, productUri);
         if (product != null && product.getCount() > 0) {
             product.moveToFirst();
