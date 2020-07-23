@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_item_size">70dp</dimen>
+    <dimen name="iamge_item_margin">7dp</dimen>
+    <dimen name="card_corner_radius">15dp</dimen>
+    <dimen name="margin_five">5dp</dimen>
+    <dimen name="gif_size">300dp</dimen>
+    <dimen name="margin_ten">10dp</dimen>
+    <dimen name="floating_btn_margin">20dp</dimen>
+    <dimen name="image_size">200dp</dimen>
+    <dimen name="title_size_details">34sp</dimen>
+    <dimen name="body_size_details">18sp</dimen>
+    <dimen name="title2_size_details">24sp</dimen>
+</resources>
